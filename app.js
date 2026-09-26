@@ -441,8 +441,8 @@ function render() {
     list.innerHTML = html;
   }
   var nMod = entries.filter(function (d) { return d.updated_by; }).length;
-  $('count').innerHTML = '<b>' + hits.length + '</b>개 보임 · 전체 ' + entries.length
-    + (nMod ? ' · 고쳐진 것 <b>' + nMod + '</b>' : '');
+  $('count').innerHTML = '<b>' + hits.length + '</b>개 보임 / angezeigt · 전체 / gesamt '
+    + entries.length + (nMod ? ' · 고쳐진 것 / geändert <b>' + nMod + '</b>' : '');
   syncChips();
 }
 
@@ -466,12 +466,14 @@ function buildChips() {
   function fill(id, key, values, counts, labeler, extra) {
     var row = $(id);
     row.setAttribute('data-key', key);
-    row.innerHTML = '<span class="flabel">' + (key === 'cat' ? '분류' : '상태') + '</span>';
+    row.innerHTML = '<span class="flabel">'
+      + (key === 'cat' ? '분류<span class="deu">/ Kategorie</span>'
+                       : '상태<span class="deu">/ Status</span>') + '</span>';
     function add(label, val, n, cls) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'chip' + (cls ? ' ' + cls : '');
-      b.innerHTML = esc(label) + (n == null ? '' : '<span class="n">' + n + '</span>');
+      b.innerHTML = label + (n == null ? '' : '<span class="n">' + n + '</span>');
       b.setAttribute('data-val', val);
       b.addEventListener('click', function () {
         if (cls === 'warn') state.flagOnly = !state.flagOnly; else state[key] = val;
@@ -479,15 +481,18 @@ function buildChips() {
       });
       row.appendChild(b);
     }
-    add('전체 / alle', '전체', null);
+    add('전체<span class="deu">/ alle</span>', '전체', null);
     values.forEach(function (v) { if (counts[v]) add(labeler(v), v, counts[v]); });
     if (extra) extra(add);
   }
-  fill('f-cat', 'cat', CATS, cc, function (c) { return c; });
-  fill('f-st', 'st', STATUS, sc, function (s) { return s + ' / ' + ST_DE[s]; },
+  fill('f-cat', 'cat', CATS, cc, function (c) {
+    return CAT_DE[c] ? c + '<span class="deu">/ ' + CAT_DE[c] + '</span>' : c;
+  });
+  fill('f-st', 'st', STATUS, sc,
+    function (s) { return s + '<span class="deu">/ ' + ST_DE[s] + '</span>'; },
     function (add) {
       var n = entries.filter(function (d) { return d.flag; }).length;
-      if (n) add('⚠ 결정 대기 / offen', '__flag__', n, 'warn');
+      if (n) add('⚠ 결정 대기<span class="deu">/ offen</span>', '__flag__', n, 'warn');
     });
 }
 
