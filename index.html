@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>우명 용어집 / Woomyung-Glossar</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F1F2EE; --surface:#FBFBF9; --raised:#FFFFFF;
+  --ink:#1B2421; --ink-soft:#5C655F; --ink-faint:#8C948E;
+  --rule:#D3D7D1; --rule-soft:#E4E7E2;
+  --celadon:#3F7A6C; --celadon-wash:#E3ECE8;
+  --ok:#2F6B4F; --propose:#3A5A8C; --review:#96571F; --ctx:#6A4E86;
+  --edited:#8A6A17; --edited-wash:#F6EFD9;
+  --serif-ko:"Noto Serif KR",Batang,"Nanum Myeongjo",serif;
+  --serif:"Spectral","Iowan Old Style",Georgia,serif;
+  --sans:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#14191A; --surface:#1B2123; --raised:#222A2B;
+    --ink:#E4E8E3; --ink-soft:#A3ACA6; --ink-faint:#79837D;
+    --rule:#313A3A; --rule-soft:#262E2F;
+    --celadon:#82B8A8; --celadon-wash:#22302C;
+    --ok:#68B48C; --propose:#7FA3D6; --review:#D19A5C; --ctx:#B294D1;
+    --edited:#D8B457; --edited-wash:#2C2617;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+a{color:var(--celadon)}
+:focus-visible{outline:2px solid var(--celadon);outline-offset:2px;border-radius:2px}
+
+/* ── 제목 ── */
+header{padding-block:34px 18px;border-bottom:1px solid var(--rule)}
+h1{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px}
+h1 .t-ko{font-family:var(--serif-ko);font-weight:700;font-size:clamp(24px,4vw,34px);
+  letter-spacing:-.015em}
+h1 .t-slash{font-family:var(--serif);font-size:clamp(20px,3.2vw,28px);color:var(--ink-faint)}
+h1 .t-de{font-family:var(--serif);font-weight:600;font-size:clamp(21px,3.4vw,30px);
+  color:var(--celadon)}
+.tagline{font-family:var(--serif);font-style:italic;color:var(--ink-soft);
+  font-size:15px;margin:8px 0 0}
+.tagline .sep{font-style:normal;color:var(--ink-faint);padding:0 6px}
+.userbar{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+  font-size:13px;color:var(--ink-soft)}
+.badge{font-size:11px;letter-spacing:.05em;border:1px solid var(--rule);
+  border-radius:999px;padding:2px 10px;color:var(--ink-faint)}
+.badge.admin{border-color:var(--celadon);color:var(--celadon)}
+
+/* ── 가운데 칸 (로그인 · 대기) ── */
+.pane{max-width:440px;margin:56px auto;background:var(--surface);
+  border:1px solid var(--rule);border-radius:5px;padding:28px}
+.pane h2{font-family:var(--serif-ko);font-weight:500;font-size:20px;margin:0 0 4px}
+.pane .h2de{font-family:var(--serif);font-style:italic;font-size:15px;
+  color:var(--celadon);margin:0 0 18px}
+.pane p{font-size:14px;color:var(--ink-soft);margin:0 0 16px}
+.pane p.de{font-style:italic;font-family:var(--serif);font-size:13.5px}
+.tabs{display:flex;gap:4px;margin-bottom:18px}
+.tabs button{flex:1;font-family:var(--sans);font-size:14px;padding:8px;cursor:pointer;
+  background:none;border:1px solid var(--rule);border-radius:3px;color:var(--ink-soft)}
+.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);
+  color:var(--paper);font-weight:600}
+form.auth{display:grid;gap:12px}
+label{display:grid;gap:4px;font-size:11.5px;letter-spacing:.06em;
+  color:var(--ink-faint);font-weight:600}
+input,textarea,select{font-family:var(--sans);font-size:15px;color:var(--ink);
+  background:var(--raised);border:1px solid var(--rule);border-radius:3px;
+  padding:9px 11px;width:100%;letter-spacing:normal}
+input:focus,textarea:focus,select:focus{border-color:var(--celadon);outline:none;
+  box-shadow:0 0 0 3px var(--celadon-wash)}
+textarea{resize:vertical;min-height:60px}
+button.go{font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;
+  background:var(--ink);color:var(--paper);border:0;border-radius:3px;padding:11px}
+button.go:hover{background:var(--celadon)}
+button.go:disabled{opacity:.45;cursor:default}
+button.plain{font-family:var(--sans);font-size:13.5px;background:none;cursor:pointer;
+  color:var(--ink-soft);border:1px solid var(--rule);border-radius:3px;padding:7px 13px}
+button.plain:hover{color:var(--ink);border-color:var(--ink)}
+.say{font-size:13.5px;color:var(--ink-soft);min-height:1.3em}
+.say.bad{color:var(--review)}
+.say.good{color:var(--ok)}
+
+/* ── 찾기 ── */
+.search-bar{position:sticky;top:0;z-index:20;background:var(--paper);
+  padding-block:13px 11px;border-bottom:1px solid var(--rule-soft)}
+.search-field{display:flex;align-items:center;gap:10px;background:var(--raised);
+  border:1px solid var(--rule);border-radius:3px;padding:0 12px}
+.search-field:focus-within{border-color:var(--celadon);box-shadow:0 0 0 3px var(--celadon-wash)}
+#q{flex:1;min-width:0;border:0;background:none;font-family:var(--serif-ko);
+  font-size:18px;padding:11px 0;box-shadow:none}
+#q:focus{box-shadow:none}
+#q::placeholder{font-family:var(--sans);font-size:14px;color:var(--ink-faint)}
+.filters{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.frow{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px}
+.flabel{font-size:11px;letter-spacing:.09em;color:var(--ink-faint);
+  min-width:38px;font-weight:600}
+.chip{border:1px solid var(--rule);background:none;color:var(--ink-soft);
+  font-family:var(--sans);font-size:12.5px;border-radius:999px;padding:3px 11px;cursor:pointer}
+.chip:hover{border-color:var(--celadon);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip.warn[aria-pressed="true"]{background:var(--review);border-color:var(--review);color:#fff}
+.chip .n{font-variant-numeric:tabular-nums;opacity:.55;margin-left:4px;font-size:11px}
+.barfoot{margin-top:10px;display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:space-between;gap:10px}
+.count{font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums;margin:0}
+.count b{color:var(--ink);font-weight:600}
+
+/* ── 항목 ── */
+.cat{margin:34px 0 0}
+.cat-head{display:flex;align-items:baseline;gap:9px;padding-bottom:7px;
+  border-bottom:2px solid var(--ink)}
+.cat-head h2{font-family:var(--serif-ko);font-weight:500;font-size:18px;margin:0}
+.cat-head .cat-de{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--celadon)}
+.cat-head .n{font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums;
+  margin-left:auto}
+.entry{display:grid;grid-template-columns:minmax(140px,196px) 1fr auto;gap:4px 20px;
+  padding:14px 0;border-bottom:1px solid var(--rule-soft)}
+.entry:last-child{border-bottom:0}
+.entry.touched{background:linear-gradient(90deg,var(--edited-wash),transparent 62%);
+  box-shadow:inset 3px 0 0 var(--edited);padding-left:12px;margin-left:-12px}
+.head{display:flex;flex-direction:column;gap:2px}
+.ko{font-family:var(--serif-ko);font-weight:500;font-size:18px;line-height:1.3}
+.hj{font-family:var(--serif-ko);font-size:14px;color:var(--ink-faint);letter-spacing:.08em}
+.body-col{min-width:0}
+.de-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 11px}
+.de{font-family:var(--serif);font-weight:600;font-size:18px;color:var(--celadon)}
+.pill{font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:2px 8px;
+  border-radius:999px;border:1px solid currentColor;white-space:nowrap;flex:none}
+.pill.fix{color:var(--ok)} .pill.ctx{color:var(--ctx)}
+.pill.rev{color:var(--review)} .pill.new{color:var(--propose)}
+.flagmark{color:var(--review);font-weight:700}
+.en{display:grid;grid-template-columns:auto 1fr;gap:1px 9px;margin-top:7px}
+.en dt{font-size:11px;letter-spacing:.05em;color:var(--ink-faint);font-weight:600;
+  white-space:nowrap;padding-top:2px}
+.en dd{margin:0;font-family:var(--serif);font-size:14.5px;color:var(--ink-soft)}
+.unconf{font-family:var(--sans);font-size:10.5px;color:var(--review)}
+.memo{margin-top:7px;font-size:13.5px;color:var(--ink-soft);max-width:66ch}
+.why{margin-top:5px;font-size:12.5px;color:var(--review);max-width:66ch}
+.where{margin-top:6px;font-size:11.5px;color:var(--ink-faint)}
+.byline{margin-top:6px;font-size:11.5px;color:var(--edited)}
+.hist{margin-top:7px;font-size:12px;color:var(--ink-faint);border-left:2px solid var(--rule);
+  padding-left:10px;display:grid;gap:3px}
+mark{background:var(--celadon-wash);color:inherit;padding:0 1px;border-radius:2px}
+.tools{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+button.tool{font-family:var(--sans);font-size:12px;background:none;color:var(--ink-faint);
+  border:1px solid var(--rule);border-radius:3px;padding:3px 9px;cursor:pointer;
+  white-space:nowrap}
+button.tool:hover{border-color:var(--celadon);color:var(--celadon)}
+
+/* ── 고치는 칸 ── */
+.editor{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:11px;
+  background:var(--surface);border:1px solid var(--celadon);border-radius:4px;padding:15px}
+.editor .de-in{font-family:var(--serif);font-weight:600;font-size:16px}
+.ed-wide{grid-column:1/-1}
+.ed-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+
+/* ── 관리자 ── */
+.admin{margin-top:12px;background:var(--surface);border:1px solid var(--celadon);
+  border-radius:4px;padding:16px 18px}
+.admin h3{font-family:var(--serif-ko);font-weight:500;font-size:16px;margin:0 0 3px}
+.admin .h3de{font-family:var(--serif);font-style:italic;font-size:13.5px;
+  color:var(--celadon);margin:0 0 14px}
+.person{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--rule-soft)}
+.person:last-child{border-bottom:0}
+.person .nm{font-weight:600}
+.person .em{font-size:12.5px;color:var(--ink-faint);font-family:var(--serif)}
+.person .sp{margin-left:auto;display:flex;gap:6px}
+button.ok{font-family:var(--sans);font-size:12.5px;font-weight:600;cursor:pointer;
+  background:var(--ok);color:#fff;border:0;border-radius:3px;padding:5px 12px}
+button.no{font-family:var(--sans);font-size:12.5px;cursor:pointer;background:none;
+  color:var(--review);border:1px solid var(--review);border-radius:3px;padding:5px 12px}
+
+.empty{padding:50px 0;text-align:center;color:var(--ink-faint)}
+.empty p{margin:0 0 4px}
+.notice{margin-top:12px;font-size:13.5px;padding:10px 13px;border-radius:3px;
+  background:var(--edited-wash);border:1px solid var(--edited);color:var(--ink)}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink-soft)}
+footer h3{font-family:var(--serif-ko);font-size:14px;font-weight:500;margin:0 0 9px;
+  color:var(--ink)}
+footer dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;max-width:64ch}
+footer dt{font-weight:600;color:var(--ink);white-space:nowrap}
+footer dd{margin:0}
+footer .de{font-family:var(--serif);font-style:italic;font-size:12.5px;
+  color:var(--ink-faint);display:block;font-weight:400}
+
+@media (max-width:640px){
+  .entry{grid-template-columns:1fr;gap:4px}
+  .entry.touched{background:var(--edited-wash)}
+  .head{flex-direction:row;align-items:baseline;gap:8px}
+  .tools{flex-direction:row;justify-content:flex-start;margin-top:6px}
+  .flabel{min-width:0;width:100%}
+  #q{font-size:16px}
+  .pane{margin:28px auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1><span class="t-ko">우명 용어집</span><span class="t-slash">/</span><span class="t-de">Woomyung-Glossar</span></h1>
+  <p class="tagline">한국어 &middot; 한자 &middot; 영어 &middot; 독일어<span class="sep">|</span>Koreanisch &middot; Chinesisch &middot; Englisch &middot; Deutsch</p>
+  <div class="userbar" id="userbar" hidden>
+    <span id="whoami"></span>
+    <span class="badge" id="rolebadge"></span>
+    <button class="plain" id="logout" type="button">나가기 / Abmelden</button>
+  </div>
+  <div id="notice"></div>
+</header>
+
+<!-- ── 로그인 · 가입 ─────────────────────────────────────────── -->
+<section class="pane" id="gate" hidden>
+  <h2>들어가기</h2>
+  <p class="h2de">Anmelden</p>
+  <div class="tabs" role="tablist">
+    <button type="button" id="tab-in" role="tab" aria-selected="true">로그인 / Anmelden</button>
+    <button type="button" id="tab-up" role="tab" aria-selected="false">가입 / Registrieren</button>
+  </div>
+  <p id="gate-hint">등록된 분만 볼 수 있습니다.
+    <span class="de" style="display:block">Nur für freigegebene Mitarbeitende.</span></p>
+  <form class="auth" id="authform">
+    <label id="lb-name" hidden>이름 / Name
+      <input id="f-name" autocomplete="name" maxlength="40"></label>
+    <label>메일 / E-Mail
+      <input id="f-email" type="email" required autocomplete="email"></label>
+    <label>비밀번호 / Passwort
+      <input id="f-pw" type="password" required minlength="8" autocomplete="current-password"></label>
+    <button class="go" type="submit" id="f-go">로그인 / Anmelden</button>
+    <p class="say" id="gate-say"></p>
+  </form>
+</section>
+
+<!-- ── 승인 대기 ─────────────────────────────────────────────── -->
+<section class="pane" id="waiting" hidden>
+  <h2>승인을 기다리고 있습니다</h2>
+  <p class="h2de">Warten auf Freigabe</p>
+  <p>관리자가 승인하면 용어집이 보입니다. 승인된 뒤 이 쪽을 새로 고쳐 주세요.</p>
+  <p class="de">Sobald die Administratorin Sie freigibt, wird das Glossar sichtbar.
+    Bitte laden Sie die Seite danach neu.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="plain" id="recheck" type="button">다시 확인 / Erneut prüfen</button>
+    <button class="plain" id="logout2" type="button">나가기 / Abmelden</button>
+  </div>
+  <p class="say" id="wait-say"></p>
+</section>
+
+<!-- ── 관리자 ────────────────────────────────────────────────── -->
+<section class="admin" id="adminpane" hidden>
+  <h3>관리자 &mdash; 승인</h3>
+  <p class="h3de">Administration &mdash; Freigaben</p>
+  <div id="people"></div>
+</section>
+
+<!-- ── 용어집 ────────────────────────────────────────────────── -->
+<div class="search-bar" id="bar" hidden>
+  <div class="search-field">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+      style="flex:none;color:var(--ink-faint)">
+      <circle cx="6.8" cy="6.8" r="4.8" stroke="currentColor" stroke-width="1.5"></circle>
+      <path d="M10.4 10.4L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+    </svg>
+    <input id="q" type="search" autocomplete="off" spellcheck="false"
+      placeholder="마음, 眞, Wahrheit, mind — 아무 말로나 / in jeder Sprache">
+  </div>
+  <div class="filters">
+    <div class="frow" id="f-cat"><span class="flabel">분류</span></div>
+    <div class="frow" id="f-st"><span class="flabel">상태</span></div>
+  </div>
+  <div class="barfoot">
+    <p class="count" id="count"></p>
+    <button class="plain" id="addbtn" type="button">+ 새 낱말 / Neuer Eintrag</button>
+  </div>
+</div>
+<div id="addarea"></div>
+<main id="list"></main>
+
+<footer id="legend" hidden>
+  <h3>표 읽는 법 / Legende</h3>
+  <dl>
+    <dt>확정 &middot; festgelegt</dt>
+    <dd>정해진 독일어. 그대로 씁니다
+      <span class="de">Festgelegt. Unverändert verwenden. Nur die Administratorin setzt diesen Status.</span></dd>
+    <dt>맥락 선택 &middot; kontextabhängig</dt>
+    <dd>문맥에 따라 메모의 대안에서 고릅니다
+      <span class="de">Je nach Kontext eine der in der Anmerkung genannten Varianten wählen.</span></dd>
+    <dt>신규 제안 &middot; neuer Vorschlag</dt>
+    <dd>아직 확인 전입니다<span class="de">Noch nicht bestätigt.</span></dd>
+    <dt>검토 필요 &middot; zu prüfen</dt>
+    <dd>기록이 어긋나거나 판단이 필요합니다
+      <span class="de">Widersprüchliche Angaben oder offene Entscheidung.</span></dd>
+    <dt>미확인 &middot; unbestätigt</dt>
+    <dd>그 책의 기출간 영문본에서 확인하지 못한, 제안된 영어입니다
+      <span class="de">In der veröffentlichten Übersetzung nicht belegt.</span></dd>
+    <dt>순리 &middot; 가짐</dt>
+    <dd>영문이 책마다 다른 것은 잘못이 아닙니다 — 각 책의 기출간 번역본을 그대로 옮긴 것입니다
+      <span class="de">Abweichende englische Fassungen sind kein Fehler: sie stammen wörtlich
+      aus der jeweils veröffentlichten Übersetzung.</span></dd>
+  </dl>
+</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
