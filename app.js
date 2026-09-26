@@ -6,20 +6,22 @@
 var sb = window.supabase.createClient(window.CFG.url, window.CFG.anonKey);
 
 var CATS = ['핵심 용어', '존재 · 우주', '마음 구조', '삶 · 세상',
-            '방법 · 동사', '시어·표현', '시 제목', '표기 규칙'];
+            '방법 · 동사', '시어·표현', '시 제목', '산문 제목', '표기 규칙'];
 var CAT_DE = {
   '핵심 용어': 'Kernbegriffe', '존재 · 우주': 'Sein und Kosmos',
   '마음 구조': 'Struktur des Geistes', '삶 · 세상': 'Leben und Welt',
   '방법 · 동사': 'Methode und Verben', '시어·표현': 'Dichterische Wendungen',
-  '시 제목': 'Gedichttitel', '표기 규칙': 'Schreibregeln'
+  '시 제목': 'Gedichttitel', '산문 제목': 'Prosatitel',
+  '표기 규칙': 'Schreibregeln'
 };
 var STATUS = ['확정', '맥락 선택', '검토 필요', '신규 제안'];
 var ST_DE = {'확정': 'festgelegt', '맥락 선택': 'kontextabhängig',
              '검토 필요': 'zu prüfen', '신규 제안': 'neuer Vorschlag'};
 var ST_CLASS = {'확정': 'fix', '맥락 선택': 'ctx', '검토 필요': 'rev', '신규 제안': 'new'};
-var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'memo'];
+var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'en_meeting', 'memo'];
 var LABEL = {hj: '한자', de: '독일어', st: '상태',
-             en_sunri: '순리 영문', en_wants: '가짐 영문', memo: '메모'};
+             en_sunri: '순리 영문', en_wants: '가짐 영문',
+             en_meeting: '만나는방법 영문', memo: '메모'};
 
 var me = null;        // glossary_profiles 한 줄
 var entries = [];
@@ -259,8 +261,8 @@ function norm(s) {
   return s;
 }
 function hay(d) {
-  return norm([d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.memo, d.poem, d.cat]
-    .join(' '));
+  return norm([d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.en_meeting,
+               d.memo, d.poem, d.cat].join(' '));
 }
 function matches(d) {
   if (state.cat !== '전체' && d.cat !== state.cat) return false;
@@ -309,7 +311,8 @@ function engLine(label, val, q) {
 function entryHTML(d, q) {
   if (openEditor === d.id) return editorHTML(d);
   var hist = histBy[d.id] || [];
-  var en = engLine('순리', d.en_sunri, q) + engLine('가짐', d.en_wants, q);
+  var en = engLine('순리', d.en_sunri, q) + engLine('가짐', d.en_wants, q)
+    + engLine('만나는 방법', d.en_meeting, q);
   var where = [d.book, d.poem].filter(Boolean).join(' · ');
   var histHTML = '';
   if (openHist[d.id] && hist.length) {
@@ -362,6 +365,7 @@ function editorHTML(d) {
     + '<label>한자 / Chinesisch<input name="hj" value="' + esc(d.hj) + '" maxlength="40"></label>'
     + '<label>순리 영문 / Engl. (Sunri)<input name="en_sunri" value="' + esc(d.en_sunri) + '" maxlength="200"></label>'
     + '<label>가짐 영문 / Engl. (Wants)<input name="en_wants" value="' + esc(d.en_wants) + '" maxlength="200"></label>'
+    + '<label>만나는방법 영문 / Engl. (Meeting)<input name="en_meeting" value="' + esc(d.en_meeting || '') + '" maxlength="200"></label>'
     + '<label class="ed-wide">메모 / Anmerkung &mdash; 왜 이렇게 옮기나 · Begründung'
     + '<textarea name="memo" maxlength="900">' + esc(d.memo) + '</textarea></label>'
     + '<div class="ed-foot"><button class="go" type="submit" style="padding:8px 18px">저장 / Speichern</button>'
@@ -584,6 +588,7 @@ function saveNew(form, say, btn) {
     id: 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     sort_no: 9000, cat: v.cat || CATS[0], ko: v.ko, hj: v.hj || '', de: v.de || '',
     st: '신규 제안', flag: false, why: '', en_sunri: v.en_sunri || '', en_wants: '',
+    en_meeting: '',
     book: '앱에서 넣음', poem: v.poem || '', memo: v.memo || '',
     updated_by: (me.name || me.email || ''), updated_at: new Date().toISOString()
   };
