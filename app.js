@@ -216,23 +216,48 @@ function loadEntries() {
     });
 }
 
+/* 찾기 글자 다듬기 — 독일 동료가 움라우트 없이 쳐도 찾히도록.
+   ü→u, ö→o, ä→a, ß→ss. 한글·한자는 그대로 둔다. */
+function norm(s) {
+  s = String(s == null ? '' : s).toLowerCase().replace(/ß/g, 'ss');
+  try { s = s.normalize('NFD').replace(/[̀-ͯ]/g, ''); } catch (e) {}
+  return s;
+}
 function hay(d) {
-  return [d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.memo, d.poem, d.cat]
-    .join(' ').toLowerCase();
+  return norm([d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.memo, d.poem, d.cat]
+    .join(' '));
 }
 function matches(d) {
   if (state.cat !== '전체' && d.cat !== state.cat) return false;
   if (state.st !== '전체' && d.st !== state.st) return false;
   if (state.flagOnly && !d.flag) return false;
-  if (state.q && hay(d).indexOf(state.q.toLowerCase()) < 0) return false;
+  if (state.q) {
+    var h = hay(d);
+    /* 띄어쓴 낱말은 모두 들어 있어야 한다: 「mind Geist」로도 찾힌다 */
+    var words = norm(state.q).split(/\s+/).filter(Boolean);
+    for (var i = 0; i < words.length; i++) {
+      if (h.indexOf(words[i]) < 0) return false;
+    }
+  }
   return true;
 }
 function mark(text, q) {
   var t = esc(text);
   if (!q) return t;
-  var i = t.toLowerCase().indexOf(q.toLowerCase());
-  if (i < 0) return t;
-  return t.slice(0, i) + '<mark>' + t.slice(i, i + q.length) + '</mark>' + t.slice(i + q.length);
+  var words = norm(q).split(/\s+/).filter(Boolean);
+  var nt = norm(t);
+  for (var w = 0; w < words.length; w++) {
+    var i = nt.indexOf(words[w]);
+    if (i >= 0 && words[w].length) {
+      /* 다듬은 글자와 본디 글자의 길이가 같을 때만 칠한다 (NFD 로 늘어난 경우 건너뜀) */
+      if (nt.length === t.length) {
+        return t.slice(0, i) + '<mark>' + t.slice(i, i + words[w].length)
+          + '</mark>' + t.slice(i + words[w].length);
+      }
+      return t;
+    }
+  }
+  return t;
 }
 function when(t) {
   if (!t) return '';
