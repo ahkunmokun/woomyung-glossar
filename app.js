@@ -216,6 +216,41 @@ function loadEntries() {
     });
 }
 
+
+/* ── 한글 입력기로 잘못 친 것 되돌리기 ────────────────────────────
+   한글 자판을 켠 채 Wahrheit 를 치면 「ㅑㅁㅗ룬ㅑㅅ」 같은 글자가 들어간다.
+   그것을 본디 영문 자판 글자로 되돌려 준다 (두벌식). */
+var CHO = ['r','R','s','e','E','f','a','q','Q','t','T','d','w','W','c','z','x','v','g'];
+var JUNG = ['k','o','i','O','j','p','u','P','h','hk','ho','hl','y','n','nj','np','nl',
+            'b','m','ml','l'];
+var JONG = ['','r','R','rt','s','sw','sg','e','f','fr','fa','fq','ft','fx','fv','fg',
+            'a','q','qt','t','T','d','w','c','z','x','v','g'];
+var JAMO = {
+  'ㄱ':'r','ㄲ':'R','ㄴ':'s','ㄷ':'e','ㄸ':'E','ㄹ':'f','ㅁ':'a','ㅂ':'q','ㅃ':'Q',
+  'ㅅ':'t','ㅆ':'T','ㅇ':'d','ㅈ':'w','ㅉ':'W','ㅊ':'c','ㅋ':'z','ㅌ':'x','ㅍ':'v',
+  'ㅎ':'g','ㅏ':'k','ㅐ':'o','ㅑ':'i','ㅒ':'O','ㅓ':'j','ㅔ':'p','ㅕ':'u','ㅖ':'P',
+  'ㅗ':'h','ㅛ':'y','ㅜ':'n','ㅠ':'b','ㅡ':'m','ㅣ':'l'
+};
+function hangulToKeys(str) {
+  var out = '', changed = false;
+  for (var i = 0; i < str.length; i++) {
+    var ch = str[i], c = str.charCodeAt(i);
+    if (c >= 0xAC00 && c <= 0xD7A3) {              /* 가 ~ 힣 */
+      var n = c - 0xAC00;
+      out += CHO[Math.floor(n / 588)]
+           + JUNG[Math.floor((n % 588) / 28)]
+           + JONG[n % 28];
+      changed = true;
+    } else if (JAMO[ch]) {                          /* 홑자모 */
+      out += JAMO[ch];
+      changed = true;
+    } else {
+      out += ch;
+    }
+  }
+  return changed ? out : '';
+}
+
 /* 찾기 글자 다듬기 — 독일 동료가 움라우트 없이 쳐도 찾히도록.
    ü→u, ö→o, ä→a, ß→ss. 한글·한자는 그대로 둔다. */
 function norm(s) {
@@ -356,8 +391,38 @@ function render() {
   var hits = entries.filter(matches);
   var list = $('list');
   if (!hits.length) {
+    var tip = '';
+    if (state.q) {
+      /* 한글 자판으로 잘못 친 것이면 되돌려 보고, 그것으로 찾히면 권한다 */
+      var alt = hangulToKeys(state.q);
+      if (alt) {
+        var save = state.q;
+        state.q = alt;
+        var n = entries.filter(matches).length;
+        state.q = save;
+        if (n) {
+          tip = '<p style="margin-top:14px">혹시 <button class="plain" id="usealt" '
+            + 'style="font-family:var(--serif);font-size:15px;color:var(--celadon);'
+            + 'border-color:var(--celadon)">' + esc(alt) + '</button> 를 찾으셨나요? '
+            + '(' + n + '개)<br><span style="font-size:12.5px">한글 자판이 켜져 있습니다 — '
+            + '<b>한/영</b> 키를 누르세요 / Die koreanische Tastatur ist aktiv</span></p>';
+        }
+      }
+      tip += '<p style="margin-top:12px;font-size:12px;color:var(--ink-faint)">'
+        + '앱이 받은 글자 / gesucht wurde: <code style="font-size:13px;color:var(--ink)">'
+        + esc(state.q) + '</code></p>';
+    }
     list.innerHTML = '<div class="empty"><p>찾은 낱말이 없습니다 / Kein Eintrag gefunden</p>'
-      + '<p>찾는 말을 줄여 보세요 / Bitte Suchbegriff kürzen</p></div>';
+      + '<p>찾는 말을 줄여 보세요 / Bitte Suchbegriff kürzen</p>' + tip + '</div>';
+    var ua = $('usealt');
+    if (ua) {
+      ua.addEventListener('click', function () {
+        $('q').value = ua.textContent;
+        state.q = ua.textContent;
+        render();
+        $('q').focus();
+      });
+    }
   } else {
     var html = '';
     CATS.forEach(function (c) {
