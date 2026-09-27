@@ -18,11 +18,11 @@ var STATUS = ['확정', '맥락 선택', '검토 필요', '신규 제안'];
 var ST_DE = {'확정': 'festgelegt', '맥락 선택': 'kontextabhängig',
              '검토 필요': 'zu prüfen', '신규 제안': 'neuer Vorschlag'};
 var ST_CLASS = {'확정': 'fix', '맥락 선택': 'ctx', '검토 필요': 'rev', '신규 제안': 'new'};
-var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'en_meeting',
+var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'en_meeting', 'en_heaven',
               'ex_ko', 'ex_en', 'ex_de', 'memo'];
 var LABEL = {hj: '한자', de: '독일어', st: '상태',
              en_sunri: '순리 영문', en_wants: '가짐 영문',
-             en_meeting: '만나는방법 영문',
+             en_meeting: '만나는방법 영문', en_heaven: '하늘사람 영문',
              ex_ko: '용례 韓', ex_en: '용례 英', ex_de: '용례 獨', memo: '메모'};
 
 var me = null;        // glossary_profiles 한 줄
@@ -263,7 +263,7 @@ function norm(s) {
   return s;
 }
 function hay(d) {
-  return norm([d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.en_meeting,
+  return norm([d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.en_meeting, d.en_heaven,
                d.ex_ko, d.ex_en, d.ex_de, d.memo, d.poem, d.cat].join(' '));
 }
 function matches(d) {
@@ -323,7 +323,7 @@ function entryHTML(d, q) {
   if (openEditor === d.id) return editorHTML(d);
   var hist = histBy[d.id] || [];
   var en = engLine('순리', d.en_sunri, q) + engLine('가짐', d.en_wants, q)
-    + engLine('만나는 방법', d.en_meeting, q);
+    + engLine('만나는 방법', d.en_meeting, q) + engLine('하늘사람', d.en_heaven, q);
   var where = [d.book, d.poem].filter(Boolean).join(' · ');
   var histHTML = '';
   if (openHist[d.id] && hist.length) {
@@ -378,6 +378,7 @@ function editorHTML(d) {
     + '<label>순리 영문 / Engl. (Sunri)<input name="en_sunri" value="' + esc(d.en_sunri) + '" maxlength="200"></label>'
     + '<label>가짐 영문 / Engl. (Wants)<input name="en_wants" value="' + esc(d.en_wants) + '" maxlength="200"></label>'
     + '<label>만나는방법 영문 / Engl. (Meeting)<input name="en_meeting" value="' + esc(d.en_meeting || '') + '" maxlength="200"></label>'
+    + '<label>하늘사람 영문 / Engl. (Heaven)<input name="en_heaven" value="' + esc(d.en_heaven || '') + '" maxlength="200"></label>'
     + '<label class="ed-wide">용례 韓 / Beispiel (Kor.)'
     + '<input name="ex_ko" value="' + esc(d.ex_ko || '') + '" maxlength="400"></label>'
     + '<label class="ed-wide">용례 英 / Beispiel (Engl.)'
@@ -611,7 +612,7 @@ function saveNew(form, say, btn) {
     id: 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     sort_no: 9000, cat: v.cat || CATS[0], ko: v.ko, hj: v.hj || '', de: v.de || '',
     st: '신규 제안', flag: false, why: '', en_sunri: v.en_sunri || '', en_wants: '',
-    en_meeting: '', ex_ko: '', ex_en: '', ex_de: '',
+    en_meeting: '', en_heaven: '', ex_ko: '', ex_en: '', ex_de: '',
     book: '앱에서 넣음', poem: v.poem || '', memo: v.memo || '',
     updated_by: (me.name || me.email || ''), updated_at: new Date().toISOString()
   };
