@@ -18,10 +18,12 @@ var STATUS = ['확정', '맥락 선택', '검토 필요', '신규 제안'];
 var ST_DE = {'확정': 'festgelegt', '맥락 선택': 'kontextabhängig',
              '검토 필요': 'zu prüfen', '신규 제안': 'neuer Vorschlag'};
 var ST_CLASS = {'확정': 'fix', '맥락 선택': 'ctx', '검토 필요': 'rev', '신규 제안': 'new'};
-var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'en_meeting', 'memo'];
+var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'en_meeting',
+              'ex_ko', 'ex_en', 'ex_de', 'memo'];
 var LABEL = {hj: '한자', de: '독일어', st: '상태',
              en_sunri: '순리 영문', en_wants: '가짐 영문',
-             en_meeting: '만나는방법 영문', memo: '메모'};
+             en_meeting: '만나는방법 영문',
+             ex_ko: '용례 韓', ex_en: '용례 英', ex_de: '용례 獨', memo: '메모'};
 
 var me = null;        // glossary_profiles 한 줄
 var entries = [];
@@ -262,7 +264,7 @@ function norm(s) {
 }
 function hay(d) {
   return norm([d.ko, d.hj, d.de, d.en_sunri, d.en_wants, d.en_meeting,
-               d.memo, d.poem, d.cat].join(' '));
+               d.ex_ko, d.ex_en, d.ex_de, d.memo, d.poem, d.cat].join(' '));
 }
 function matches(d) {
   if (state.cat !== '전체' && d.cat !== state.cat) return false;
@@ -308,6 +310,15 @@ function engLine(label, val, q) {
     + (un ? ' <span class="unconf">미확인 / unbest.</span>' : '') + '</dd>';
 }
 
+function exBlock(d, q) {
+  if (!(d.ex_ko || d.ex_en || d.ex_de)) return '';
+  return '<div class="ex"><span class="lab">용례 / Beispiel</span>'
+    + (d.ex_ko ? '<span class="ko">' + mark(d.ex_ko, q) + '</span>' : '')
+    + (d.ex_en ? '<span class="en">' + mark(d.ex_en, q) + '</span>' : '')
+    + (d.ex_de ? '<span class="de">' + mark(d.ex_de, q) + '</span>' : '')
+    + '</div>';
+}
+
 function entryHTML(d, q) {
   if (openEditor === d.id) return editorHTML(d);
   var hist = histBy[d.id] || [];
@@ -332,6 +343,7 @@ function entryHTML(d, q) {
     + (d.flag ? '<span class="flagmark" title="결정 대기 / offen">&#9888;</span>' : '')
     + '</div>'
     + (en ? '<dl class="en">' + en + '</dl>' : '')
+    + exBlock(d, q)
     + (d.memo ? '<p class="memo">' + mark(d.memo, q) + '</p>' : '')
     + (d.why ? '<p class="why">' + esc(d.why) + '</p>' : '')
     + (where ? '<p class="where">' + esc(where) + '</p>' : '')
@@ -366,6 +378,12 @@ function editorHTML(d) {
     + '<label>순리 영문 / Engl. (Sunri)<input name="en_sunri" value="' + esc(d.en_sunri) + '" maxlength="200"></label>'
     + '<label>가짐 영문 / Engl. (Wants)<input name="en_wants" value="' + esc(d.en_wants) + '" maxlength="200"></label>'
     + '<label>만나는방법 영문 / Engl. (Meeting)<input name="en_meeting" value="' + esc(d.en_meeting || '') + '" maxlength="200"></label>'
+    + '<label class="ed-wide">용례 韓 / Beispiel (Kor.)'
+    + '<input name="ex_ko" value="' + esc(d.ex_ko || '') + '" maxlength="400"></label>'
+    + '<label class="ed-wide">용례 英 / Beispiel (Engl.)'
+    + '<input name="ex_en" value="' + esc(d.ex_en || '') + '" maxlength="400"></label>'
+    + '<label class="ed-wide">용례 獨 / Beispiel (Dt.)'
+    + '<input name="ex_de" value="' + esc(d.ex_de || '') + '" maxlength="400"></label>'
     + '<label class="ed-wide">메모 / Anmerkung &mdash; 왜 이렇게 옮기나 · Begründung'
     + '<textarea name="memo" maxlength="900">' + esc(d.memo) + '</textarea></label>'
     + '<div class="ed-foot"><button class="go" type="submit" style="padding:8px 18px">저장 / Speichern</button>'
@@ -593,7 +611,7 @@ function saveNew(form, say, btn) {
     id: 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     sort_no: 9000, cat: v.cat || CATS[0], ko: v.ko, hj: v.hj || '', de: v.de || '',
     st: '신규 제안', flag: false, why: '', en_sunri: v.en_sunri || '', en_wants: '',
-    en_meeting: '',
+    en_meeting: '', ex_ko: '', ex_en: '', ex_de: '',
     book: '앱에서 넣음', poem: v.poem || '', memo: v.memo || '',
     updated_by: (me.name || me.email || ''), updated_at: new Date().toISOString()
   };
