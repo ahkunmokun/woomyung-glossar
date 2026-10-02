@@ -23,7 +23,7 @@ var FIELDS = ['hj', 'de', 'st', 'en_sunri', 'en_wants', 'en_meeting', 'en_heaven
 var LABEL = {hj: '한자', de: '독일어', st: '상태',
              en_sunri: '순리 영문', en_wants: '가짐 영문',
              en_meeting: '만나는방법 영문', en_heaven: '하늘사람 영문',
-             ex_ko: '용례 韓', ex_en: '용례 英', ex_de: '용례 獨', memo: '메모'};
+             ex_ko: '용례 KR', ex_en: '용례 EN', ex_de: '용례 DE', memo: '메모'};
 
 var me = null;        // glossary_profiles 한 줄
 var entries = [];
@@ -379,11 +379,11 @@ function editorHTML(d) {
     + '<label>가짐 영문 / Engl. (Wants)<input name="en_wants" value="' + esc(d.en_wants) + '" maxlength="200"></label>'
     + '<label>만나는방법 영문 / Engl. (Meeting)<input name="en_meeting" value="' + esc(d.en_meeting || '') + '" maxlength="200"></label>'
     + '<label>하늘사람 영문 / Engl. (Heaven)<input name="en_heaven" value="' + esc(d.en_heaven || '') + '" maxlength="200"></label>'
-    + '<label class="ed-wide">용례 韓 / Beispiel (Kor.)'
+    + '<label class="ed-wide">용례 KR / Beispiel (Kor.)'
     + '<input name="ex_ko" value="' + esc(d.ex_ko || '') + '" maxlength="400"></label>'
-    + '<label class="ed-wide">용례 英 / Beispiel (Engl.)'
+    + '<label class="ed-wide">용례 EN / Beispiel (Engl.)'
     + '<input name="ex_en" value="' + esc(d.ex_en || '') + '" maxlength="400"></label>'
-    + '<label class="ed-wide">용례 獨 / Beispiel (Dt.)'
+    + '<label class="ed-wide">용례 DE / Beispiel (Dt.)'
     + '<input name="ex_de" value="' + esc(d.ex_de || '') + '" maxlength="400"></label>'
     + '<label class="ed-wide">메모 / Anmerkung &mdash; 왜 이렇게 옮기나 · Begründung'
     + '<textarea name="memo" maxlength="900">' + esc(d.memo) + '</textarea></label>'
